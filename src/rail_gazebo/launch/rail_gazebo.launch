@@ -5,11 +5,9 @@
     <arg name="paused" value="false"/>
   </include>
 
-  <!-- Load the URDF into the ROS Parameter Server -->
   <param name="robot_description"
     command="$(find xacro)/xacro --inorder '$(find rail_description)/urdf/rail.xacro'" />
 
-  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
     args="-urdf -model rail -param robot_description"/>
 </launch>
