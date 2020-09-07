@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+
+<robot name="rail" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<xacro:property name="PI" value="3.1415926535897931"/>
+
+
+
+<link name="world"/>
+
+
+<joint name="world_fixed" type="fixed">
+    <origin xyz="0 0 0.25" rpy="0 0 0"/>
+    <parent link="world"/>
+    <child link="base"/>
+
+</joint>
+
+<link name="base">
+    <collision>
+        <geometry>
+            <box size="1 1 0.5"/>
+        </geometry>
+    </collision>
+    
+    <visual>
+        <geometry>
+            <box size="1 1 0.5"/>
+        </geometry>
+    </visual>
+
+    <inertial>
+        <mass value="10.0"/>
+        <inertia
+	    ixx="${10 / 12.0 * (1*1 + 0.5*0.5)}" ixy="0.0" ixz="0.0"
+	    iyy="${10 / 12.0 * (0.5*0.5 + 1*1)}" iyz="0.0"
+	    izz="${10 / 12.0 * (1*1 + 1*1)}"/>
+    </inertial>
+</link>
+
+<joint name="yaw" type="continuous">
+    <parent link="base"/>
+    <child link="vertical_strut"/>
+    <origin xyz="0 0 1.25" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+</joint>
+
+<link name="vertical_strut">
+    <collision>
+        <geometry>
+            <box size="0.5 0.5 2"/>
+        </geometry>
+    </collision>
+    
+    <visual>
+        <geometry>
+            <box size="0.5 0.5 2"/>
+        </geometry>
+    </visual>
+
+    <inertial>
+        <mass value="10.0"/>
+        <inertia
+	    ixx="${10 / 12.0 * (0.5 + 2*2)}" ixy="0.0" ixz="0.0"
+	    iyy="${10 / 12.0 * (2*2 + 0.5)}" iyz="0.0"
+	    izz="${10 / 12.0 * (0.5 + 0.5)}"/>
+    </inertial>
+</link>
+
+<joint name="pitch" type="continuous">
+    <parent link="vertical_strut"/>
+    <child link="barrel"/>
+    <origin xyz="0 0.5 0.75" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+</joint>
+
+<link name="barrel">
+    <collision>
+        <origin xyz="0.75 0 0" rpy="0 ${(PI)/2} 0"/>
+        <geometry>
+            <box size="0.5 0.5 2"/>
+        </geometry>
+    </collision>
+    
+    <visual>
+        <origin xyz="0.75 0 0" rpy="0 ${(PI)/2} 0"/>
+        <geometry>
+            <box size="0.5 0.5 2"/>
+        </geometry>
+    </visual>
+
+    <inertial>
+        <origin xyz="0.75 0 0" rpy="0 ${(PI)/2} 0"/>
+        <mass value="10.0"/>
+        <inertia
+	    ixx="${10 / 12.0 * (0.5 + 2*2)}" ixy="0.0" ixz="0.0"
+	    iyy="${10 / 12.0 * (2*2 + 0.5)}" iyz="0.0"
+	    izz="${10 / 12.0 * (0.5 + 0.5)}"/>
+    </inertial>
+</link>
+
+
+</robot>
