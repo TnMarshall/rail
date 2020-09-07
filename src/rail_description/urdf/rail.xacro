@@ -22,7 +22,9 @@
     </collision>
     
     <visual>
-        <box size="1 1 0.5"/>
+        <geometry>
+            <box size="1 1 0.5"/>
+        </geometry>
     </visual>
 
     <inertial>
