@@ -3,7 +3,22 @@
 <robot name="rail" xmlns:xacro="http://www.ros.org/wiki/xacro">
 <xacro:property name="PI" value="3.1415926535897931"/>
 
+<gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/rail</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+</gazebo>
 
+<gazebo reference="vertical_strut">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+</gazebo>
+
+<gazebo reference="barrel">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+</gazebo>
 
 <link name="world"/>
 
@@ -41,6 +56,7 @@
     <parent link="base"/>
     <child link="vertical_strut"/>
     <origin xyz="0 0 1.25" rpy="0 0 0"/>
+    <limit effort="10000" velocity="10.0"/>
     <axis xyz="0 0 1"/>
 </joint>
 
@@ -58,11 +74,11 @@
     </visual>
 
     <inertial>
-        <mass value="10.0"/>
+        <mass value="1.0"/>
         <inertia
-	    ixx="${10 / 12.0 * (0.5 + 2*2)}" ixy="0.0" ixz="0.0"
-	    iyy="${10 / 12.0 * (2*2 + 0.5)}" iyz="0.0"
-	    izz="${10 / 12.0 * (0.5 + 0.5)}"/>
+	    ixx="${1 / 12.0 * (0.5*0.5 + 2*2)}" ixy="0.0" ixz="0.0"
+	    iyy="${1 / 12.0 * (2*2 + 0.5*0.5)}" iyz="0.0"
+	    izz="${1 / 12.0 * (0.5*0.5 + 0.5*0.5)}"/>
     </inertial>
 </link>
 
@@ -70,33 +86,55 @@
     <parent link="vertical_strut"/>
     <child link="barrel"/>
     <origin xyz="0 0.5 0.75" rpy="0 0 0"/>
+    <limit effort="10000" velocity="10.0"/>
     <axis xyz="0 1 0"/>
 </joint>
 
 <link name="barrel">
     <collision>
-        <origin xyz="0.75 0 0" rpy="0 ${(PI)/2} 0"/>
+        <origin xyz="0 0 0" rpy="0 ${(PI)/2} 0"/>
         <geometry>
             <box size="0.5 0.5 2"/>
         </geometry>
     </collision>
     
     <visual>
-        <origin xyz="0.75 0 0" rpy="0 ${(PI)/2} 0"/>
+        <origin xyz="0 0 0" rpy="0 ${(PI)/2} 0"/>
         <geometry>
             <box size="0.5 0.5 2"/>
         </geometry>
     </visual>
 
     <inertial>
-        <origin xyz="0.75 0 0" rpy="0 ${(PI)/2} 0"/>
-        <mass value="10.0"/>
+        <origin xyz="0 0 0" rpy="0 ${(PI)/2} 0"/>
+        <mass value="0.5"/>
         <inertia
-	    ixx="${10 / 12.0 * (0.5 + 2*2)}" ixy="0.0" ixz="0.0"
-	    iyy="${10 / 12.0 * (2*2 + 0.5)}" iyz="0.0"
-	    izz="${10 / 12.0 * (0.5 + 0.5)}"/>
+	    ixx="${0.5 / 12.0 * (0.5*0.5 + 2*2)}" ixy="0.0" ixz="0.0"
+	    iyy="${0.5 / 12.0 * (2*2 + 0.5*0.5)}" iyz="0.0"
+	    izz="${0.5 / 12.0 * (0.5*0.5 + 0.5*0.5)}"/>
     </inertial>
 </link>
 
+<transmission name="yaw_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="yaw">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+</transmission>
+
+<transmission name="pitch_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="pitch">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+</transmission>
 
 </robot>
