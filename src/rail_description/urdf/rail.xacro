@@ -3,7 +3,22 @@
 <robot name="rail" xmlns:xacro="http://www.ros.org/wiki/xacro">
 <xacro:property name="PI" value="3.1415926535897931"/>
 
+<gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/rail</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+</gazebo>
 
+<gazebo reference="vertical_strut">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+</gazebo>
+
+<gazebo reference="barrel">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+</gazebo>
 
 <link name="world"/>
 
@@ -98,5 +113,26 @@
     </inertial>
 </link>
 
+<transmission name="yaw_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="yaw">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+</transmission>
+
+<transmission name="pitch_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="pitch">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+</transmission>
 
 </robot>
