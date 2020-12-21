@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  genmsg
 )
 
 ## System dependencies are found with CMake's conventions
@@ -204,3 +205,7 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+
+add_executable(keyboard_teleop_node src/keyboard_teleop.cpp)
+target_link_libraries(keyboard_teleop_node ${catkin_LIBRARIES})
