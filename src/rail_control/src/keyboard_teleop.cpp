@@ -14,7 +14,7 @@ std_msgs::Float64 pitchval;
 std_msgs::Float64 yawval;
 std_msgs::Float64 servoMax;  //temporary solution to keep values bound to useful servo values
 std_msgs::Float64 servoMin;  //temporary solution to keep values bound to useful servo values
-int gainVal = 1;
+int gain = 1;
 
 ////////// Included directly from reference, to be replaced later //////////
 
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
     ros::Publisher yaw = n.advertise<std_msgs::Float64>("rail/yaw_position_controller/command", 1000);
 
     ros::Rate loop_rate(100);
-    printf("\n____________________\nq = exit\nw = up\ns = down\na = left\nd = right\nc = center\nh = this help menu\n___________________\n");
+    printf("\n____________________\nq = exit\nw = up\ns = down\na = left\nd = right\nc = center\nr = gain+\nt = gain-\ny = gain reset\nh = this help menu\n___________________\n");
 
     while (ros::ok())
     {
@@ -82,22 +82,22 @@ int main(int argc, char **argv)
                 break;
             case 'w':
                 printf("up\n");
-                pitchval.data = pitchval.data - 1;
+                pitchval.data = pitchval.data - 1*gain;
                 if(pitchval.data < servoMin.data) pitchval.data = servoMin.data;
                 break;
             case 'a':
                 printf("left\n");
-                yawval.data = yawval.data + 1;
+                yawval.data = yawval.data + 1*gain;
                 if(yawval.data > servoMax.data) yawval.data = servoMax.data;
                 break;
             case 's':
                 printf("down\n");
-                pitchval.data = pitchval.data + 1;
+                pitchval.data = pitchval.data + 1*gain;
                 if(pitchval.data > servoMax.data) pitchval.data = servoMax.data;
                 break;
             case 'd':
                 printf("right\n");
-                yawval.data = yawval.data - 1;
+                yawval.data = yawval.data - 1*gain;
                 if(yawval.data < servoMin.data) yawval.data = servoMin.data;
                 break;
             case 'c':
@@ -106,7 +106,20 @@ int main(int argc, char **argv)
                 yawval.data = 0;
                 break;
             case 'h':
-                printf("\n____________________\nq = exit\nw = up\ns = down\na = left\nd = right\nc = center\nh = this help menu\n___________________\n");
+                printf("\n____________________\nq = exit\nw = up\ns = down\na = left\nd = right\nc = center\nr = gain+\nt = gain-\ny = gain reset\nh = this help menu\n___________________\n");
+                break;
+            case 'r':
+                printf("gain increase: %d\n", gain);
+                gain++;
+                break;
+            case 't':
+                printf("gain decrease: %d\n", gain);
+                gain--;
+                if(gain<1) gain = 1;
+                break;
+            case 'y':
+                printf("gain reset\n");
+                gain = 1;
                 break;
         }
         if (key == 'q'){
