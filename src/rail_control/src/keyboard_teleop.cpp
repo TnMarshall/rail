@@ -63,10 +63,29 @@ int main(int argc, char **argv)
     while (ros::ok())
     {
         key = getch();
-        printf("%c\n", key);
+
+        switch (key){
+            case 'q':
+                printf("quit");
+                break;
+                break;
+            case 'w':
+                printf("up\n");
+                break;
+            case 'a':
+                printf("left\n");
+                break;
+            case 's':
+                printf("down\n");
+                break;
+            case 'd':
+                printf("right\n");
+                break;
+        }
         if (key == 'q'){
             break;
         }
+        
         pitchval.data = 10;
         pitch.publish(pitchval);
 
