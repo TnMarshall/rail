@@ -61,8 +61,8 @@ int main(int argc, char **argv)
 
     ros::NodeHandle n;
 
-    ros::Publisher pitch = n.advertise<std_msgs::Float64>("pitch_val", 1000);
-    ros::Publisher yaw = n.advertise<std_msgs::Float64>("yaw_val", 1000);
+    ros::Publisher pitch = n.advertise<std_msgs::Float64>("rail/pitch_position_controller/command", 1000);
+    ros::Publisher yaw = n.advertise<std_msgs::Float64>("rail/yaw_position_controller/command", 1000);
 
     ros::Rate loop_rate(30);
     printf("Press q to exit\n____________________\nw = up\ns = down\na = left\nd = right\n___________________\n");
