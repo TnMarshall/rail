@@ -54,8 +54,8 @@ int getch(void)
 int main(int argc, char **argv)
 {
 
-    servoMax.data = 180;  //temporary solution to keep values bound to useful servo values
-    servoMin.data = 0;  //temporary solution to keep values bound to useful servo values
+    servoMax.data = 90;  //temporary solution to keep values bound to useful servo values
+    servoMin.data = -90;  //temporary solution to keep values bound to useful servo values
 
     ros::init(argc, argv, "keyboard_teleop");
 
@@ -71,6 +71,9 @@ int main(int argc, char **argv)
     {
         key = getch();
 
+        pitchval.data = pitchval.data / 3.14159265 * 180;
+        yawval.data = yawval.data / 3.14159265 * 180;
+
         switch (key){
             case 'q':
                 printf("quitting\n");
@@ -78,29 +81,30 @@ int main(int argc, char **argv)
                 break;
             case 'w':
                 printf("up\n");
-                pitchval.data = pitchval.data + 1;
+                pitchval.data = pitchval.data - 1;
                 if(pitchval.data > servoMax.data) pitchval.data = servoMax.data;
                 break;
             case 'a':
                 printf("left\n");
-                yawval.data = yawval.data - 1;
+                yawval.data = yawval.data + 1;
                 if(yawval.data < servoMin.data) yawval.data = servoMin.data;
                 break;
             case 's':
                 printf("down\n");
-                pitchval.data = pitchval.data - 1;
+                pitchval.data = pitchval.data + 1;
                 if(pitchval.data < servoMin.data) pitchval.data = servoMin.data;
                 break;
             case 'd':
                 printf("right\n");
-                yawval.data = yawval.data + 1;
+                yawval.data = yawval.data - 1;
                 if(yawval.data > servoMax.data) yawval.data = servoMax.data;
                 break;
         }
         if (key == 'q'){
             break;
         }
-        
+        pitchval.data = pitchval.data * 3.14159265 / 180;
+        yawval.data = yawval.data * 3.14159265 / 180;
         pitch.publish(pitchval);
         yaw.publish(yawval);
 
