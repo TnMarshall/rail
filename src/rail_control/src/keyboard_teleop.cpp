@@ -11,7 +11,7 @@
 
 
 std_msgs::Float64 pitchval;
-
+std_msgs::Float64 yawval;
 
 ////////// Included directly from reference, to be replaced later //////////
 
@@ -57,8 +57,8 @@ int main(int argc, char **argv)
 
     ros::Publisher pitch = n.advertise<std_msgs::Float64>("pitch_val", 1000);
 
-    ros::Rate loop_rate(10);
-    printf("Press q to exit");
+    ros::Rate loop_rate(30);
+    printf("Press q to exit\n____________________\nw = up\ns = down\na = left\nd = right\n___________________\n");
 
     while (ros::ok())
     {
@@ -66,27 +66,30 @@ int main(int argc, char **argv)
 
         switch (key){
             case 'q':
-                printf("quit");
+                printf("quitting\n");
                 break;
                 break;
             case 'w':
                 printf("up\n");
+                pitchval.data = pitchval.data + 1;
                 break;
             case 'a':
                 printf("left\n");
+                yawval.data = yawval.data + 1;
                 break;
             case 's':
                 printf("down\n");
+                pitchval.data = pitchval.data - 1;
                 break;
             case 'd':
                 printf("right\n");
+                yawval.data = yawval.data - 1;
                 break;
         }
         if (key == 'q'){
             break;
         }
         
-        pitchval.data = 10;
         pitch.publish(pitchval);
 
         ros::spinOnce();
