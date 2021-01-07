@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     ros::Publisher yaw = n.advertise<std_msgs::Float64>("rail/yaw_position_controller/command", 1000);
 
     ros::Rate loop_rate(30);
-    printf("Press q to exit\n____________________\nw = up\ns = down\na = left\nd = right\n___________________\n");
+    printf("Press q to exit\n____________________\nw = up\ns = down\na = left\nd = right\nc = center\n___________________\n");
 
     while (ros::ok())
     {
@@ -99,6 +99,10 @@ int main(int argc, char **argv)
                 yawval.data = yawval.data - 1;
                 if(yawval.data > servoMax.data) yawval.data = servoMax.data;
                 break;
+            case 'c':
+                printf("centering\n");
+                pitchval.data = 0;
+                yawval.data = 0;
         }
         if (key == 'q'){
             break;
