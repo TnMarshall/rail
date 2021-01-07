@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     ros::Publisher pitch = n.advertise<std_msgs::Float64>("rail/pitch_position_controller/command", 1000);
     ros::Publisher yaw = n.advertise<std_msgs::Float64>("rail/yaw_position_controller/command", 1000);
 
-    ros::Rate loop_rate(30);
+    ros::Rate loop_rate(100);
     printf("Press q to exit\n____________________\nw = up\ns = down\na = left\nd = right\nc = center\n___________________\n");
 
     while (ros::ok())
@@ -82,22 +82,22 @@ int main(int argc, char **argv)
             case 'w':
                 printf("up\n");
                 pitchval.data = pitchval.data - 1;
-                if(pitchval.data > servoMax.data) pitchval.data = servoMax.data;
+                if(pitchval.data < servoMin.data) pitchval.data = servoMin.data;
                 break;
             case 'a':
                 printf("left\n");
                 yawval.data = yawval.data + 1;
-                if(yawval.data < servoMin.data) yawval.data = servoMin.data;
+                if(yawval.data > servoMax.data) yawval.data = servoMax.data;
                 break;
             case 's':
                 printf("down\n");
                 pitchval.data = pitchval.data + 1;
-                if(pitchval.data < servoMin.data) pitchval.data = servoMin.data;
+                if(pitchval.data > servoMax.data) pitchval.data = servoMax.data;
                 break;
             case 'd':
                 printf("right\n");
                 yawval.data = yawval.data - 1;
-                if(yawval.data > servoMax.data) yawval.data = servoMax.data;
+                if(yawval.data < servoMin.data) yawval.data = servoMin.data;
                 break;
             case 'c':
                 printf("centering\n");
