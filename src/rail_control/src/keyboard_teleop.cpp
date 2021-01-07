@@ -14,6 +14,7 @@ std_msgs::Float64 pitchval;
 std_msgs::Float64 yawval;
 std_msgs::Float64 servoMax;  //temporary solution to keep values bound to useful servo values
 std_msgs::Float64 servoMin;  //temporary solution to keep values bound to useful servo values
+int gainVal = 1;
 
 ////////// Included directly from reference, to be replaced later //////////
 
@@ -65,7 +66,7 @@ int main(int argc, char **argv)
     ros::Publisher yaw = n.advertise<std_msgs::Float64>("rail/yaw_position_controller/command", 1000);
 
     ros::Rate loop_rate(100);
-    printf("Press q to exit\n____________________\nw = up\ns = down\na = left\nd = right\nc = center\n___________________\n");
+    printf("\n____________________\nq = exit\nw = up\ns = down\na = left\nd = right\nc = center\nh = this help menu\n___________________\n");
 
     while (ros::ok())
     {
@@ -103,6 +104,10 @@ int main(int argc, char **argv)
                 printf("centering\n");
                 pitchval.data = 0;
                 yawval.data = 0;
+                break;
+            case 'h':
+                printf("\n____________________\nq = exit\nw = up\ns = down\na = left\nd = right\nc = center\nh = this help menu\n___________________\n");
+                break;
         }
         if (key == 'q'){
             break;
