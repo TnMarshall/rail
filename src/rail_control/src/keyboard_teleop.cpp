@@ -12,6 +12,8 @@
 
 std_msgs::Float64 pitchval;
 std_msgs::Float64 yawval;
+std_msgs::Float64 servoMax;  //temporary solution to keep values bound to useful servo values
+std_msgs::Float64 servoMin;  //temporary solution to keep values bound to useful servo values
 
 ////////// Included directly from reference, to be replaced later //////////
 
@@ -51,11 +53,16 @@ int getch(void)
 
 int main(int argc, char **argv)
 {
+
+    servoMax.data = 180;  //temporary solution to keep values bound to useful servo values
+    servoMin.data = 0;  //temporary solution to keep values bound to useful servo values
+
     ros::init(argc, argv, "keyboard_teleop");
 
     ros::NodeHandle n;
 
     ros::Publisher pitch = n.advertise<std_msgs::Float64>("pitch_val", 1000);
+    ros::Publisher yaw = n.advertise<std_msgs::Float64>("yaw_val", 1000);
 
     ros::Rate loop_rate(30);
     printf("Press q to exit\n____________________\nw = up\ns = down\na = left\nd = right\n___________________\n");
@@ -72,18 +79,22 @@ int main(int argc, char **argv)
             case 'w':
                 printf("up\n");
                 pitchval.data = pitchval.data + 1;
+                if(pitchval.data > servoMax.data) pitchval.data = servoMax.data;
                 break;
             case 'a':
                 printf("left\n");
-                yawval.data = yawval.data + 1;
+                yawval.data = yawval.data - 1;
+                if(yawval.data < servoMin.data) yawval.data = servoMin.data;
                 break;
             case 's':
                 printf("down\n");
                 pitchval.data = pitchval.data - 1;
+                if(pitchval.data < servoMin.data) pitchval.data = servoMin.data;
                 break;
             case 'd':
                 printf("right\n");
-                yawval.data = yawval.data - 1;
+                yawval.data = yawval.data + 1;
+                if(yawval.data > servoMax.data) yawval.data = servoMax.data;
                 break;
         }
         if (key == 'q'){
@@ -91,6 +102,7 @@ int main(int argc, char **argv)
         }
         
         pitch.publish(pitchval);
+        yaw.publish(yawval);
 
         ros::spinOnce();
 
