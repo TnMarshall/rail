@@ -10,4 +10,6 @@ INCOMPLETE: This readme will eventually contain full setup instructions. The bel
 
 5. To run the various functionalities, use roslaunch subdirectory_name launch_file_name.
 
+6. To launch gazebo with controllers and be able to control the positions. First launch the gazebo launch file. Then the control launch file. Then rqt with a message publisher and add the pitch and yaw command topics
+
 Again, this setup description is not complete yet.
